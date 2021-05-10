@@ -29,7 +29,7 @@ const DrfApiFetch = () => {
         setSelectedTask(res.data);
       });
   };
-  const deleteTask = () => {
+  const deleteTask = (id) => {
     axios
       .delete(`https://drf-api210509.herokuapp.com/api/tasks/${id}/`, {
         headers: {
@@ -47,6 +47,9 @@ const DrfApiFetch = () => {
         {tasks.map((task) => (
           <li key={task.id}>
             {task.title} {task.id}
+            <button onClick={() => deleteTask(task.id)}>
+              <i className="fas fa-trash-alt"></i>
+            </button>
           </li>
         ))}
       </ul>
@@ -56,9 +59,9 @@ const DrfApiFetch = () => {
       <button type="button" onClick={() => getTask()}>
         Get task
       </button>
-      <button type="button" onClick={() => deleteTask()}>
+      {/* <button type="button" onClick={() => deleteTask()}>
         delete task
-      </button>
+      </button> */}
       <h3>
         {selectedTask.title} {selectedTask.id}
       </h3>
