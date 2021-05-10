@@ -55,8 +55,14 @@ const DrfApiFetch = () => {
         },
       })
       .then((res) => {
-        setTasks(res.data([...tasks, res.data]));
+        setTasks([...tasks, res.data]);
       });
+  };
+
+  const handleInputChange = () => (evt) => {
+    const value = evt.target.value;
+    const name = evt.target.name;
+    setEditedTask({ ...editedTask, [name]: value });
   };
 
   return (
@@ -83,6 +89,15 @@ const DrfApiFetch = () => {
       <h3>
         {selectedTask.title} {selectedTask.id}
       </h3>
+      <input
+        type="text"
+        name="title"
+        value={editedTask.title}
+        onChange={handleInputChange()}
+        placeholder="New task ?"
+        required
+      />
+      <button onClick={() => newTask(editedTask)}>Create</button>
     </div>
   );
 };
