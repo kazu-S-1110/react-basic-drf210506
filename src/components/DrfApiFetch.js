@@ -37,7 +37,8 @@ const DrfApiFetch = () => {
         },
       })
       .then((res) => {
-        console.log(res);
+        setTasks(tasks.filter((task) => task.id !== id));
+        setSelectedTask([]);
       });
   };
 
