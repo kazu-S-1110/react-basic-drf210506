@@ -5,6 +5,7 @@ const DrfApiFetch = () => {
   const [tasks, setTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState([]);
   const [id, setId] = useState(1);
+  const [editedTask, setEditedTask] = useState({ id: '', title: '' });
 
   useEffect(() => {
     axios
@@ -39,6 +40,22 @@ const DrfApiFetch = () => {
       .then((res) => {
         setTasks(tasks.filter((task) => task.id !== id));
         setSelectedTask([]);
+      });
+  };
+
+  const newTask = (task) => {
+    const data = {
+      title: task.title,
+    };
+    axios
+      .post(`https://drf-api210509.herokuapp.com/api/tasks/`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Token 409ef3138e24e52a9cb355bf69bdcac8af8cd9d1',
+        },
+      })
+      .then((res) => {
+        setTasks(res.data([...tasks, res.data]));
       });
   };
 
