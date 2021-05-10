@@ -3,9 +3,12 @@ import axios from 'axios';
 
 const DrfApiFetch = () => {
   const [tasks, setTasks] = useState([]);
+  const [selectedTask, setSelectedTask] = useState([]);
+  const [id, setId] = useState(1);
+
   useEffect(() => {
     axios
-      .get('http://127.0.0.1:8000/api/tasks/', {
+      .get('https://drf-api210509.herokuapp.com/api/tasks/', {
         headers: {
           Authorization: 'Token 409ef3138e24e52a9cb355bf69bdcac8af8cd9d1',
         },
@@ -14,6 +17,18 @@ const DrfApiFetch = () => {
         setTasks(res.data);
       });
   }, []);
+
+  const getTask = () => {
+    axios
+      .get(`https://drf-api210509.herokuapp.com/api/tasks/${id}/`, {
+        headers: {
+          Authorization: 'Token 409ef3138e24e52a9cb355bf69bdcac8af8cd9d1',
+        },
+      })
+      .then((res) => {
+        setSelectedTask(res.data);
+      });
+  };
 
   return (
     <div>
@@ -24,6 +39,15 @@ const DrfApiFetch = () => {
           </li>
         ))}
       </ul>
+      Set id <br />
+      <input type="text" value={id} onChange={(e) => setId(e.target.value)} />
+      <br />
+      <button type="button" onClick={() => getTask()}>
+        Get task
+      </button>
+      <h3>
+        {selectedTask.title} {selectedTask.id}
+      </h3>
     </div>
   );
 };
