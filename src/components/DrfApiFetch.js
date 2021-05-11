@@ -59,6 +59,22 @@ const DrfApiFetch = () => {
       })
       .then((res) => {
         setTasks([...tasks, res.data]);
+        setEditedTask({ id: '', title: '' });
+      });
+  };
+  const editTask = (task) => {
+    axios
+      .put(`https://drf-api210509.herokuapp.com/api/tasks/${task.id}/`, task, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Token 409ef3138e24e52a9cb355bf69bdcac8af8cd9d1',
+        },
+      })
+      .then((res) => {
+        setTasks(
+          tasks.map((task) => (task.id === editedTask.id ? res.data : task))
+        );
+        setEditedTask({ id: '', title: '' });
       });
   };
 
@@ -76,6 +92,9 @@ const DrfApiFetch = () => {
             {task.title} {task.id}
             <button onClick={() => deleteTask(task.id)}>
               <i className="fas fa-trash-alt"></i>
+            </button>
+            <button onClick={() => setEditedTask(task)}>
+              <i className="fas fa-pen"></i>
             </button>
           </li>
         ))}
@@ -100,7 +119,11 @@ const DrfApiFetch = () => {
         placeholder="New task ?"
         required
       />
-      <button onClick={() => newTask(editedTask)}>Create</button>
+      {editedTask.id ? (
+        <button onClick={() => editTask(editedTask)}>Update</button>
+      ) : (
+        <button onClick={() => newTask(editedTask)}>Create</button>
+      )}
     </div>
   );
 };
